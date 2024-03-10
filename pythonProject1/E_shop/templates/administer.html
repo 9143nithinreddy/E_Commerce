@@ -1,0 +1,158 @@
+{% extends 'master.html' %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Products</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, h2 {
+            margin-bottom: 10px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: inline-block;
+            width: 150px;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 200px;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"] {
+            padding: 8px 20px;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        img {
+            max-width: 100px;
+        }
+
+        a {
+            text-decoration: none;
+            color: blue;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Admin Panel - Products</h1>
+
+    <!-- Add Product Form -->
+    <h2>Add Product</h2>
+    <form action="#" method="POST" enctype="multipart/form-data">
+        <br>
+        <td>
+
+        </td>
+        {% csrf_token %}
+        <label for="category">Category:</label>
+        <select name="category" id="category">
+            <!-- Populate categories dynamically -->
+            {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+        </select><br>
+        <br>
+
+        <label for="sub_category">Sub Category:</label>
+        <select name="sub_category" id="sub_category">
+            <!-- Populate sub categories dynamically based on selected category -->
+        </select><br><br>
+
+        <label for="image">Image:</label>
+        <input type="file" name="image" id="image"><br><br>
+
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name"><br><br>
+
+        <label for="price">Price:</label>
+        <input type="number" name="price" id="price"><br><br>
+
+
+
+        <input type="submit" value="Add Product">
+    </form>
+
+    <!-- Display Products -->
+    <h2>Products</h2>
+    <table border="3">
+        <tr>
+            <th>Category</th>
+            <th>Sub Category</th>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Price</th>
+
+            <th>Date Added</th>
+            <th>Actions</th>
+        </tr>
+        {% for i in prod %}
+        <tr>
+            <td>{{ i.category }}</td>
+            <td>{{ i.sub_category }}</td>
+            <td><img src="{{ prod.image.url }}" alt="{{ prod.name }}"></td>
+            <td>{{ i.name }}</td>
+            <td>{{ i.price }}</td>
+            <td>{{ i.date }}</td>
+            <td>
+                <a href="{% url 'edit_product' product.id %}">Edit</a> |
+                <a href="{% url 'delete_product' product.id %}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
+{% endblock %}
